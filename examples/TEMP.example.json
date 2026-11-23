@@ -1,0 +1,7 @@
+{
+  "sensor_id": "TEMP-01",
+  "zone": "server_room",
+  "timestamp": 1795000000000,
+  "value": 25,
+  "unit": "C"
+}

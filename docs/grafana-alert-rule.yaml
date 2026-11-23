@@ -1,0 +1,60 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: office
+      folder: lab01
+      interval: 10s
+      rules:
+        - uid: bg53xvswgqry8a
+          title: TEMP-01 нет данных более 20 с
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: dg53x4czcg0sga
+              model:
+                editorMode: code
+                exemplar: false
+                expr: office_sensor_age_seconds{sensor_id="TEMP-01"}
+                instant: true
+                interval: ""
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+            - refId: C
+              queryType: expression
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          annotations: {}
+          labels: {}
+          isPaused: false
+          notification_settings:
+            receiver: email-lab01

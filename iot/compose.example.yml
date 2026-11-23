@@ -1,0 +1,14 @@
+# Образец отдельного сервиса. Итоговый общий compose.yml студент собирает сам.
+# В общем файле назовите сервис nodered; том подключается к /data.
+services:
+  nodered:
+    image: nodered/node-red:4.1
+    ports:
+      - "127.0.0.1:1880:1880"
+    environment:
+      TZ: Europe/Moscow
+    volumes:
+      - node_red_data:/data
+    restart: unless-stopped
+volumes:
+  node_red_data:

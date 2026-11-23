@@ -1,0 +1,7 @@
+{
+  "actuator_id": "FAN-01",
+  "zone": "server_room",
+  "timestamp": 1795000000000,
+  "state": "OFF",
+  "mode": "auto"
+}

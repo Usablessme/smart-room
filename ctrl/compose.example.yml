@@ -1,0 +1,18 @@
+# Пути здесь рассчитаны на запуск этого образца из папки ctrl.
+# В общем compose.yml в корне проекта замените ./receiver.js на ./ctrl/receiver.js.
+# Сервисы nodered, ctrl, storage должны быть в одной сети Compose.
+services:
+  ctrl:
+    image: node:22-alpine
+    working_dir: /app
+    command: ["node", "receiver.js"]
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./receiver.js:/app/receiver.js:ro,Z
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

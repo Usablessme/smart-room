@@ -1,0 +1,7 @@
+{
+  "sensor_id": "HUM-01",
+  "zone": "work_area",
+  "timestamp": 1795000000000,
+  "value": 45,
+  "unit": "%"
+}

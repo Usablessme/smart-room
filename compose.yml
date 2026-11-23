@@ -1,0 +1,56 @@
+# Общий compose.yml проекта LAB-01. Запускать из корня проекта.
+# Сервисы в одной сети Compose видят друг друга по имени (ctrl, storage).
+services:
+  nodered:
+    image: nodered/node-red:4.1
+    ports:
+      - "127.0.0.1:1880:1880"
+    environment:
+      TZ: Europe/Moscow
+    volumes:
+      - node_red_data:/data
+    restart: unless-stopped
+
+  ctrl:
+    image: node:22-alpine
+    working_dir: /app
+    command: ["node", "receiver.js"]
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./ctrl/receiver.js:/app/receiver.js:ro,Z
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  storage:
+    image: python:3.13-alpine
+    working_dir: /app
+    command: ["python", "-u", "server.py"]
+    environment:
+      DB_PATH: /data/telemetry.sqlite3
+      PORT: "8081"
+    ports:
+      - "127.0.0.1:8081:8081"
+    volumes:
+      - ./db/server.py:/app/server.py:ro,Z
+      - ./db/index.html:/app/index.html:ro,Z
+      - ./db/inspect_db.py:/app/inspect_db.py:ro,Z
+      - ./db/data:/data:Z
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8081/health', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  node_red_data:
