@@ -1,0 +1,17 @@
+# Рабочие данные и секреты не публикуются.
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite3
+*.db
+*-wal
+*-shm
+*-journal
+db/data/*
+!db/data/.gitkeep
+__pycache__/
+*.pyc
+node_modules/
+access.bin
+flows_cred.json
